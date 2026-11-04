@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-primary: #0B0D12;
+    --bg-secondary: #11141C;
+    --bg-tertiary: #171B26;
+    --bg-card: rgba(17, 20, 28, 0.7);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-accent: rgba(184, 243, 107, 0.3);
+    --accent-lime: #B8F36B;
+    --accent-lime-muted: #88C53E;
+    --text-primary: #F1F0EB;
+    --text-secondary: #9496A1;
+    --text-muted: #616573;
+  }
+
+  * {
+    border-color: var(--border-subtle);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: #0B0D12;
+    color: #F1F0EB;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0B0D12;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1C212E;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #283042;
+  }
+
+  ::selection {
+    background-color: #B8F36B;
+    color: #0B0D12;
+  }
+}
+
+/* Glow effects & utilities */
+.glow-lime {
+  box-shadow: 0 0 25px -5px rgba(184, 243, 107, 0.25);
+}
+
+.glow-lime-sm {
+  box-shadow: 0 0 15px -3px rgba(184, 243, 107, 0.2);
+}
+
+.glow-lime-lg {
+  box-shadow: 0 0 50px -10px rgba(184, 243, 107, 0.3);
+}
+
+.bg-radial-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-dot-matrix {
+  background-image: radial-gradient(rgba(184, 243, 107, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Pulse animation for status */
+@keyframes pulse-lime {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.15);
+  }
+}
+
+.animate-pulse-lime {
+  animation: pulse-lime 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
