@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#0B0D12",
+  themeColor: "#0D0F0D",
   width: "device-width",
   initialScale: 1,
 };
@@ -61,10 +61,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Siddhant Gupta | Full Stack Developer",
-    description:
-      "Full Stack Developer specializing in React, Next.js, Node.js, distributed systems, backend engineering, and AI-powered applications.",
+    description: "Full Stack Developer — React, Next.js, Node.js, Distributed Systems, AI Applications.",
     creator: "@siddhant62632",
-    images: ["/og-image.png"],
   },
   icons: {
     icon: "/favicon.ico",
@@ -72,14 +70,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} scroll-smooth dark`}>
-      <body className="bg-[#0B0D12] text-[#F1F0EB] font-sans min-h-screen selection:bg-[#B8F36B] selection:text-[#0B0D12] antialiased">
+      <body
+        className="antialiased"
+        style={{
+          backgroundColor: "#0D0F0D",
+          color: "#E8E0D0",
+          fontFamily: "var(--font-inter), sans-serif",
+        }}
+      >
         {children}
       </body>
     </html>

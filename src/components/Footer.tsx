@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArrowUp, Mail, Phone, Heart } from "lucide-react";
+import { ArrowUp, Mail } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
 import { PERSONAL_INFO } from "@/data/portfolio";
 
@@ -11,69 +11,117 @@ export default function Footer() {
   };
 
   return (
-    <footer className="border-t border-white/10 bg-[#08090D] py-12 text-left relative z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-8 border-b border-white/10">
+    <footer
+      className="relative z-10 py-10 text-left"
+      style={{
+        background: "rgba(10,12,10,0.98)",
+        borderTop: "2px solid rgba(93,138,60,0.2)",
+      }}
+    >
+      {/* Dirt/bedrock texture line */}
+      <div
+        style={{
+          height: "4px",
+          background: "repeating-linear-gradient(90deg, rgba(93,138,60,0.3) 0px, rgba(93,138,60,0.3) 8px, rgba(0,0,0,0.5) 8px, rgba(0,0,0,0.5) 16px)",
+          marginBottom: "0",
+        }}
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        {/* Top row */}
+        <div
+          className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6"
+          style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        >
+          {/* Logo + tagline */}
           <div>
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-[#11141C] border border-white/10 flex items-center justify-center font-mono font-bold text-xs text-[#F1F0EB]">
-                <span className="text-[#B8F36B]">S</span>G
+            <div className="flex items-center gap-3 mb-1">
+              <div
+                className="w-9 h-9 flex items-center justify-center font-mono font-bold text-sm"
+                style={{
+                  background: "rgba(93,138,60,0.2)",
+                  border: "1px solid rgba(160,208,96,0.4)",
+                  borderTop: "1px solid rgba(160,208,96,0.2)",
+                  borderLeft: "1px solid rgba(160,208,96,0.15)",
+                  borderBottom: "2px solid rgba(0,0,0,0.6)",
+                  borderRight: "2px solid rgba(0,0,0,0.6)",
+                  color: "#A0D060",
+                }}
+              >
+                SG
               </div>
-              <span className="text-base font-bold text-[#F1F0EB] tracking-tight">
-                {PERSONAL_INFO.name}
-              </span>
+              <span className="text-base font-bold text-[#F1F0EB] tracking-tight">{PERSONAL_INFO.name}</span>
             </div>
-            <p className="text-xs text-[#9496A1] font-mono mt-1">
-              Full Stack Developer • Backend Architecture • AI Applications
+            <p className="text-[11px] font-mono text-[#5A6A5A]">
+              Full Stack Developer · Backend Architecture · AI Applications
             </p>
           </div>
 
-          {/* Social Links & Back to Top */}
-          <div className="flex items-center gap-3">
-            <a
-              href={PERSONAL_INFO.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[#9496A1] hover:text-[#B8F36B] transition-colors"
-              aria-label="GitHub"
-            >
-              <Github className="w-4 h-4" />
-            </a>
-            <a
-              href={PERSONAL_INFO.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[#9496A1] hover:text-[#B8F36B] transition-colors"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
-            <a
-              href={`mailto:${PERSONAL_INFO.email}`}
-              className="p-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-[#9496A1] hover:text-[#B8F36B] transition-colors"
-              aria-label="Email"
-            >
-              <Mail className="w-4 h-4" />
-            </a>
+          {/* Social links + Back to top */}
+          <div className="flex items-center gap-2">
+            {[
+              { href: PERSONAL_INFO.github, label: "GitHub", icon: <Github className="w-4 h-4" /> },
+              { href: PERSONAL_INFO.linkedin, label: "LinkedIn", icon: <Linkedin className="w-4 h-4" /> },
+              { href: `mailto:${PERSONAL_INFO.email}`, label: "Email", icon: <Mail className="w-4 h-4" /> },
+            ].map(({ href, label, icon }) => (
+              <a
+                key={label}
+                href={href}
+                target={label !== "Email" ? "_blank" : undefined}
+                rel={label !== "Email" ? "noopener noreferrer" : undefined}
+                aria-label={label}
+                className="p-2 transition-colors text-[#5A6A5A] hover:text-[#A0D060]"
+                style={{
+                  background: "rgba(26,28,26,0.9)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderTop: "1px solid rgba(255,255,255,0.1)",
+                  borderBottom: "2px solid rgba(0,0,0,0.5)",
+                  borderRight: "2px solid rgba(0,0,0,0.5)",
+                }}
+              >
+                {icon}
+              </a>
+            ))}
+
             <button
               onClick={scrollToTop}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-[#CBD5E1] hover:text-[#B8F36B] transition-colors ml-2"
+              className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-mono transition-colors text-[#5A6A5A] hover:text-[#A0D060] ml-1"
+              style={{
+                background: "rgba(26,28,26,0.9)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderTop: "1px solid rgba(255,255,255,0.1)",
+                borderBottom: "2px solid rgba(0,0,0,0.5)",
+                borderRight: "2px solid rgba(0,0,0,0.5)",
+              }}
               title="Back to top"
             >
-              <span>Top</span>
               <ArrowUp className="w-3.5 h-3.5" />
+              <span>Top</span>
             </button>
           </div>
         </div>
 
-        {/* Bottom Credits & Status */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#616573]">
+        {/* Bottom bar */}
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-[#3A4A3A]">
           <div>
-            © 2026 {PERSONAL_INFO.name}. Built with Next.js, TypeScript & Tailwind CSS.
+            © 2026 {PERSONAL_INFO.name}. Built with Next.js, TypeScript &amp; Tailwind CSS.
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#B8F36B] animate-pulse"></span>
-            <span className="text-[#9496A1]">Based in Bhopal, India • Open for Roles</span>
+          {/* Minecraft-style coordinate display */}
+          <div
+            className="px-3 py-1.5 flex items-center gap-3"
+            style={{
+              background: "rgba(13,15,13,0.9)",
+              border: "1px solid rgba(255,255,255,0.05)",
+            }}
+          >
+            <span className="text-[#A0D060]">XYZ: END / 0 / 0</span>
+            <span>·</span>
+            <span>The End Dimension</span>
+            <span>·</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#A0D060] animate-pulse inline-block" />
+              Open for Roles
+            </span>
           </div>
         </div>
       </div>

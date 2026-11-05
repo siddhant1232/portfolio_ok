@@ -1,23 +1,54 @@
 @import "tailwindcss";
 
+/* ============================================================
+   MINECRAFT ENGINEERING PORTFOLIO — DESIGN SYSTEM
+   Deep charcoal + stone surfaces + grass-green accent
+   ============================================================ */
+
 @layer base {
   :root {
-    --bg-primary: #0B0D12;
-    --bg-secondary: #11141C;
-    --bg-tertiary: #171B26;
-    --bg-card: rgba(17, 20, 28, 0.7);
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --border-accent: rgba(184, 243, 107, 0.3);
-    --accent-lime: #B8F36B;
-    --accent-lime-muted: #88C53E;
-    --text-primary: #F1F0EB;
-    --text-secondary: #9496A1;
-    --text-muted: #616573;
+    /* Core Palette */
+    --bg-void:        #0D0F0D;
+    --bg-stone:       #121412;
+    --bg-deepstone:   #0F110F;
+    --bg-card:        rgba(18, 20, 18, 0.85);
+    --bg-glass:       rgba(28, 32, 28, 0.6);
+
+    /* Grass-green & lime accent (Minecraft grass top) */
+    --grass:          #5D8A3C;
+    --grass-bright:   #7CB85C;
+    --lime:           #A0D060;
+    --lime-glow:      rgba(160, 208, 96, 0.25);
+
+    /* Stone shades */
+    --stone-100:      #A8A8A8;
+    --stone-200:      #6E6E6E;
+    --stone-300:      #3C3C3C;
+    --stone-400:      #2A2A2A;
+
+    /* Redstone accent */
+    --redstone:       #D4321C;
+    --redstone-glow:  rgba(212, 50, 28, 0.2);
+
+    /* Gold accent (resource / achievement) */
+    --gold:           #FFAA00;
+    --gold-glow:      rgba(255, 170, 0, 0.2);
+
+    /* Diamond accent (highlight) */
+    --diamond:        #57E0E0;
+
+    /* Text */
+    --text-primary:   #E8E0D0;
+    --text-secondary: #9A9490;
+    --text-muted:     #5A5450;
+
+    /* Borders */
+    --border-subtle:  rgba(255,255,255,0.06);
+    --border-grass:   rgba(93, 138, 60, 0.4);
+    --border-stone:   rgba(100, 100, 100, 0.2);
   }
 
-  * {
-    border-color: var(--border-subtle);
-  }
+  * { border-color: var(--border-subtle); box-sizing: border-box; }
 
   html {
     scroll-behavior: smooth;
@@ -25,69 +56,250 @@
   }
 
   body {
-    background-color: #0B0D12;
-    color: #F1F0EB;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    background-color: #0D0F0D;
+    color: #E8E0D0;
     overflow-x: hidden;
   }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
+  /* Pixel-art cursor crosshair for interactive elements on desktop */
+  @media (hover: hover) {
+    a, button, [role="button"] { cursor: crosshair; }
   }
-  ::-webkit-scrollbar-track {
-    background: #0B0D12;
-  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0D0F0D; }
   ::-webkit-scrollbar-thumb {
-    background: #1C212E;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: #3C3C3C;
+    border-radius: 0px;
+    border: 1px solid rgba(255,255,255,0.05);
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #283042;
-  }
+  ::-webkit-scrollbar-thumb:hover { background: #5D8A3C; }
 
   ::selection {
-    background-color: #B8F36B;
-    color: #0B0D12;
+    background-color: #5D8A3C;
+    color: #E8E0D0;
   }
 }
 
-/* Glow effects & utilities */
-.glow-lime {
-  box-shadow: 0 0 25px -5px rgba(184, 243, 107, 0.25);
+/* ============================================================
+   PIXEL / VOXEL UTILITY CLASSES
+   ============================================================ */
+
+/* Pixel font for game-inspired labels — use sparingly */
+.font-pixel {
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.08em;
+  font-weight: 700;
 }
 
-.glow-lime-sm {
-  box-shadow: 0 0 15px -3px rgba(184, 243, 107, 0.2);
+/* Block border style */
+.border-block {
+  border: 2px solid;
+  border-color: rgba(255,255,255,0.12) rgba(0,0,0,0.5) rgba(0,0,0,0.5) rgba(255,255,255,0.12);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
 }
 
-.glow-lime-lg {
-  box-shadow: 0 0 50px -10px rgba(184, 243, 107, 0.3);
+.border-block-grass {
+  border: 2px solid;
+  border-color: rgba(160,208,96,0.4) rgba(0,0,0,0.5) rgba(0,0,0,0.5) rgba(160,208,96,0.4);
 }
 
-.bg-radial-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 24px 24px;
+.border-block-gold {
+  border: 2px solid;
+  border-color: rgba(255,170,0,0.5) rgba(0,0,0,0.5) rgba(0,0,0,0.5) rgba(255,170,0,0.5);
 }
 
-.bg-dot-matrix {
-  background-image: radial-gradient(rgba(184, 243, 107, 0.15) 1px, transparent 1px);
-  background-size: 20px 20px;
+/* Stone block texture */
+.bg-stone-block {
+  background-color: #1A1C1A;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 15px,
+      rgba(0,0,0,0.08) 15px,
+      rgba(0,0,0,0.08) 16px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 15px,
+      rgba(0,0,0,0.08) 15px,
+      rgba(0,0,0,0.08) 16px
+    );
 }
 
-/* Pulse animation for status */
-@keyframes pulse-lime {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
+/* Grass-top pattern */
+.bg-grass-block {
+  background-color: #3A5A28;
+  background-image: radial-gradient(rgba(93,138,60,0.4) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+/* Void/space background grid */
+.bg-void-grid {
+  background-color: #0D0F0D;
+  background-image:
+    linear-gradient(rgba(93,138,60,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(93,138,60,0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Diamond shimmer for special highlights */
+.bg-diamond-block {
+  background: linear-gradient(135deg, #1A2E2E 0%, #1E3A3A 50%, #1A2E2E 100%);
+}
+
+/* Inventory slot style */
+.inventory-slot {
+  background: linear-gradient(135deg, #1A1C1A 0%, #141614 100%);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-bottom-color: rgba(0,0,0,0.6);
+  border-right-color: rgba(0,0,0,0.6);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.3);
+  transition: all 0.15s ease;
+}
+
+.inventory-slot:hover {
+  border-color: rgba(160,208,96,0.6);
+  background: linear-gradient(135deg, #1E2A1A 0%, #192214 100%);
+  transform: scale(1.03);
+  box-shadow: 0 0 12px rgba(160,208,96,0.15), inset 0 0 0 1px rgba(160,208,96,0.1);
+}
+
+/* Quest objective style */
+.quest-objective {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(93,138,60,0.06);
+  border-left: 3px solid #5D8A3C;
+  border-radius: 2px;
+}
+
+/* Advancement card */
+.advancement-card {
+  background: linear-gradient(135deg, #1E2A14 0%, #161E10 100%);
+  border: 2px solid rgba(160,208,96,0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.advancement-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #5D8A3C, #A0D060, #5D8A3C);
+}
+
+/* Command block / terminal */
+.command-terminal {
+  background: #0A0C0A;
+  border: 2px solid #2A2A2A;
+  border-bottom-color: #111;
+  border-right-color: #111;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Redstone wire animation */
+@keyframes redstone-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.redstone-pulse { animation: redstone-pulse 1.5s ease-in-out infinite; }
+
+/* Grass sway */
+@keyframes grass-sway {
+  0%, 100% { transform: rotate(-1deg); }
+  50% { transform: rotate(1deg); }
+}
+.grass-sway { animation: grass-sway 3s ease-in-out infinite; transform-origin: bottom; }
+
+/* Achievement unlock pop */
+@keyframes achievement-unlock {
+  0% { opacity: 0; transform: translateY(8px) scale(0.95); }
+  60% { transform: translateY(-2px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.achievement-unlock {
+  animation: achievement-unlock 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Block hover lift */
+@keyframes block-hover {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Portal swirl */
+@keyframes portal-swirl {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.portal-swirl { animation: portal-swirl 8s linear infinite; }
+
+/* Particle float */
+@keyframes particle-float {
+  0% { opacity: 0; transform: translateY(0) scale(0.5); }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-40px) scale(1); }
+}
+.particle { animation: particle-float 2.5s ease-out infinite; }
+
+/* Coordinate HUD blink */
+@keyframes coord-blink {
+  0%, 90%, 100% { opacity: 1; }
+  95% { opacity: 0; }
+}
+.coord-cursor { animation: coord-blink 1.2s step-end infinite; }
+
+/* Hotbar selector border glow */
+.hotbar-active {
+  border-color: #A0D060 !important;
+  box-shadow: 0 0 10px rgba(160,208,96,0.4) !important;
+}
+
+/* Voxel landscape scene */
+.voxel-landscape {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Responsive image pixel rendering for small decorative pixel art */
+.pixel-art { image-rendering: pixelated; }
+
+/* Glow utilities */
+.glow-grass { box-shadow: 0 0 20px rgba(93,138,60,0.3); }
+.glow-grass-sm { box-shadow: 0 0 10px rgba(93,138,60,0.2); }
+.glow-gold { box-shadow: 0 0 20px rgba(255,170,0,0.3); }
+.glow-diamond { box-shadow: 0 0 20px rgba(87,224,224,0.3); }
+.glow-redstone { box-shadow: 0 0 20px rgba(212,50,28,0.3); }
+
+/* Text shadow for game-style headings */
+.text-shadow-block {
+  text-shadow: 2px 2px 0px rgba(0,0,0,0.6), -1px -1px 0px rgba(255,255,255,0.05);
+}
+
+/* Section coordinate label */
+.coord-label {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  color: rgba(93,138,60,0.7);
+  letter-spacing: 0.1em;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .redstone-pulse,
+  .grass-sway,
+  .achievement-unlock,
+  .portal-swirl,
+  .particle,
+  .coord-cursor {
+    animation: none !important;
   }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.15);
-  }
-}
-
-.animate-pulse-lime {
-  animation: pulse-lime 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  * { transition-duration: 0.01ms !important; }
 }
