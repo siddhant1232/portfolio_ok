@@ -38,3 +38,4 @@ export function Linkedin({ className = "w-4 h-4", ...props }: React.SVGProps<SVG
     </svg>
   );
 }
+

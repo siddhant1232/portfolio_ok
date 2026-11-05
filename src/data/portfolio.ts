@@ -345,3 +345,4 @@ export const NAV_LINKS = [
   { label: "Education", href: "#education" },
   { label: "Contact", href: "#contact" },
 ];
+

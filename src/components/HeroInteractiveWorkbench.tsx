@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Terminal, Cpu, Code2, Play, Check, Copy, RefreshCw, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { Terminal, Cpu, Code2, User, Play, Check, Copy, RefreshCw, Sparkles, MapPin, ExternalLink, ShieldCheck } from "lucide-react";
 import { PERSONAL_INFO } from "@/data/portfolio";
 
 export default function HeroInteractiveWorkbench() {
-  const [activeTab, setActiveTab] = useState<"terminal" | "architecture" | "code">("terminal");
+  const [activeTab, setActiveTab] = useState<"terminal" | "architecture" | "code" | "identity">("terminal");
   const [commandInput, setCommandInput] = useState("");
   const [copiedCode, setCopiedCode] = useState(false);
   
@@ -158,7 +159,7 @@ export async function checkRateLimit(
         <div className="flex items-center gap-1 bg-[#0B0D12] p-1 rounded-lg border border-white/5 text-xs font-mono">
           <button
             onClick={() => setActiveTab("terminal")}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-all ${
+            className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${
               activeTab === "terminal"
                 ? "bg-[#171B26] text-[#B8F36B] shadow-sm border border-white/10"
                 : "text-[#9496A1] hover:text-[#F1F0EB]"
@@ -169,18 +170,18 @@ export async function checkRateLimit(
           </button>
           <button
             onClick={() => setActiveTab("architecture")}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-all ${
+            className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${
               activeTab === "architecture"
                 ? "bg-[#171B26] text-[#B8F36B] shadow-sm border border-white/10"
                 : "text-[#9496A1] hover:text-[#F1F0EB]"
             }`}
           >
             <Cpu className="w-3 h-3" />
-            <span>Architecture</span>
+            <span>Topology</span>
           </button>
           <button
             onClick={() => setActiveTab("code")}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md transition-all ${
+            className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${
               activeTab === "code"
                 ? "bg-[#171B26] text-[#B8F36B] shadow-sm border border-white/10"
                 : "text-[#9496A1] hover:text-[#F1F0EB]"
@@ -188,6 +189,17 @@ export async function checkRateLimit(
           >
             <Code2 className="w-3 h-3" />
             <span>Source</span>
+          </button>
+          <button
+            onClick={() => setActiveTab("identity")}
+            className={`flex items-center gap-1.5 px-2 py-1 rounded-md transition-all ${
+              activeTab === "identity"
+                ? "bg-[#171B26] text-[#B8F36B] shadow-sm border border-white/10"
+                : "text-[#9496A1] hover:text-[#F1F0EB]"
+            }`}
+          >
+            <User className="w-3 h-3" />
+            <span>Identity</span>
           </button>
         </div>
       </div>
@@ -351,6 +363,79 @@ export async function checkRateLimit(
           <div className="mt-2 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] text-[#616573]">
             <span>Redis Sorted Set Sliding Window Implementation</span>
             <span className="text-[#B8F36B]">Production Pattern</span>
+          </div>
+        </div>
+      )}
+
+      {/* Tab 4: Developer Identity / Profile */}
+      {activeTab === "identity" && (
+        <div className="p-5 font-mono text-xs text-left min-h-[380px] max-h-[440px] flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between border-b border-white/10 pb-2">
+              <span className="flex items-center gap-1.5 text-[#B8F36B]">
+                <span className="w-2 h-2 rounded-full bg-[#B8F36B] animate-pulse"></span>
+                ENGINEER IDENTITY SPEC
+              </span>
+              <span className="text-[#616573]">Bhopal, MP (IST)</span>
+            </div>
+
+            {/* Profile Row with photo */}
+            <div className="flex items-center gap-4 p-3 rounded-xl bg-white/[0.02] border border-white/10">
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden border border-[#B8F36B]/50 shrink-0">
+                <Image
+                  src="/siddhant.jpg"
+                  alt="Siddhant Gupta"
+                  fill
+                  className="object-cover object-top"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <h4 className="text-sm sm:text-base font-bold text-[#F1F0EB]">{PERSONAL_INFO.name}</h4>
+                  <span className="px-1.5 py-0.2 rounded text-[10px] bg-[#B8F36B]/20 text-[#B8F36B]">
+                    Active
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#B8F36B] font-mono leading-tight">
+                  Full Stack Developer
+                </p>
+                <p className="text-[10px] text-[#9496A1]">
+                  Technocrats Institute of Technology (2023–2027)
+                </p>
+              </div>
+            </div>
+
+            {/* Key Engineering Attributes */}
+            <div className="grid grid-cols-2 gap-2 text-[11px]">
+              <div className="p-2.5 rounded-lg bg-black/40 border border-white/5 space-y-0.5">
+                <span className="text-[#616573] text-[10px] block uppercase">Backend Arch</span>
+                <span className="text-[#CBD5E1]">Node, Express, REST</span>
+              </div>
+              <div className="p-2.5 rounded-lg bg-black/40 border border-white/5 space-y-0.5">
+                <span className="text-[#616573] text-[10px] block uppercase">Distributed Data</span>
+                <span className="text-[#CBD5E1]">Redis, Postgres, Mongo</span>
+              </div>
+              <div className="p-2.5 rounded-lg bg-black/40 border border-white/5 space-y-0.5">
+                <span className="text-[#616573] text-[10px] block uppercase">Frontend Systems</span>
+                <span className="text-[#CBD5E1]">React, Next.js, TS</span>
+              </div>
+              <div className="p-2.5 rounded-lg bg-black/40 border border-white/5 space-y-0.5">
+                <span className="text-[#616573] text-[10px] block uppercase">AI Tooling</span>
+                <span className="text-[#B8F36B]">LangGraph, Gemini API</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-2 pt-2 border-t border-white/10 flex items-center justify-between text-[11px]">
+            <a
+              href="#about"
+              className="text-[#B8F36B] hover:underline flex items-center gap-1"
+            >
+              <span>Read Full Background</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <span className="text-[#616573]">SIH &apos;25 National Round</span>
           </div>
         </div>
       )}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { ArrowRight, Download, Mail, Phone, Check, Copy, Terminal, ShieldCheck, Sparkles } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
 import { PERSONAL_INFO } from "@/data/portfolio";
@@ -29,7 +30,7 @@ export default function Hero({ onOpenResumeModal }: HeroProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Headline, Bio & CTAs */}
           <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Status indicator */}
+            {/* Status indicator row */}
             <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-[#11141C] border border-[#B8F36B]/30 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B8F36B] opacity-75"></span>
@@ -49,10 +50,20 @@ export default function Hero({ onOpenResumeModal }: HeroProps) {
               .
             </h1>
 
-            {/* Introduction */}
-            <p className="text-base sm:text-lg text-[#CBD5E1] font-normal leading-relaxed max-w-2xl">
-              {PERSONAL_INFO.bio.hero}
-            </p>
+            {/* Introduction with sleek developer avatar pill */}
+            <div className="flex items-start gap-3.5">
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden border border-[#B8F36B]/50 shadow-[0_0_15px_-3px_rgba(184,243,107,0.3)] shrink-0 mt-0.5 group">
+                <Image
+                  src="/siddhant.jpg"
+                  alt="Siddhant Gupta"
+                  fill
+                  className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <p className="text-base sm:text-lg text-[#CBD5E1] font-normal leading-relaxed max-w-2xl">
+                {PERSONAL_INFO.bio.hero}
+              </p>
+            </div>
 
             {/* Supporting Text */}
             <p className="text-sm sm:text-base text-[#9496A1] leading-relaxed max-w-2xl">

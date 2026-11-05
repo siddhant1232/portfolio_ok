@@ -151,3 +151,4 @@ doc.end();
 stream.on('finish', () => {
   console.log('Resume successfully generated at:', outputPath);
 });
+
