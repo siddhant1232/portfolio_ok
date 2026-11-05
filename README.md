@@ -129,3 +129,4 @@ portfolio/
    ```
 2. Import the repository in [Vercel](https://vercel.com).
 3. Vercel automatically detects Next.js — click **Deploy**. No custom environment variables or configuration required!
+# portfolio_ok
