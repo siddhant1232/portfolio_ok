@@ -12,6 +12,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ResumeModal from "@/components/ResumeModal";
 import CommandPalette from "@/components/CommandPalette";
+import EnderAssistant from "@/components/EnderAssistant";
 
 export default function Home() {
   const [isResumeOpen, setIsResumeOpen] = useState(false);
@@ -56,6 +57,8 @@ export default function Home() {
         onClose={() => setIsCommandPaletteOpen(false)}
         onOpenResume={() => setIsResumeOpen(true)}
       />
+      {/* Ender Assistant (Floating RAG Entity) */}
+      <EnderAssistant />
     </div>
   );
 }

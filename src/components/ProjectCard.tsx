@@ -42,12 +42,13 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
       id={project.id}
       className="text-left"
       style={{
-        background: "rgba(18,20,18,0.98)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background: "rgba(10,8,18,0.98)",
+        border: "1px solid rgba(155,77,202,0.2)",
         borderTop: `3px solid ${meta.accent}`,
-        borderLeft: "1px solid rgba(255,255,255,0.1)",
-        borderBottom: "3px solid rgba(0,0,0,0.8)",
-        borderRight: "3px solid rgba(0,0,0,0.8)",
+        borderLeft: "1px solid rgba(155,77,202,0.25)",
+        borderBottom: "3px solid rgba(0,0,0,0.85)",
+        borderRight: "3px solid rgba(0,0,0,0.85)",
+        boxShadow: `0 8px 32px rgba(0,0,0,0.6), 0 0 16px ${meta.bg}`,
       }}
     >
       {/* Lab Header Bar */}
@@ -64,11 +65,16 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
             {meta.label} // SECTOR BUILD 0{index + 1}
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {/* Enderman Eyes decorative beacon */}
+          <div className="flex items-center gap-1 px-2 py-0.5 bg-[#060608] border border-[#3A1F5C]">
+            <div className="w-1.5 h-1 bg-[#C084FC] shadow-[0_0_4px_#A855F7]" />
+            <div className="w-1.5 h-1 bg-[#C084FC] shadow-[0_0_4px_#A855F7]" />
+          </div>
           <span
             className="text-[10px] font-mono font-bold px-2.5 py-0.5"
             style={{
-              background: "rgba(0,0,0,0.5)",
+              background: "rgba(0,0,0,0.6)",
               border: `1px solid ${meta.border}`,
               color: meta.accent,
             }}
@@ -81,27 +87,27 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
       {/* Main Grid: Left Narrative + Right Interactive Lab Simulator */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
 
-        {/* Left Column: Engineering Narrative & Architectural Decisions (5 cols on lg, 6 on xl) */}
+        {/* Left Column: Engineering Narrative & Architectural Decisions */}
         <div
           className="lg:col-span-5 xl:col-span-5 p-6 sm:p-8 space-y-6 flex flex-col justify-between"
-          style={{ borderRight: "1px solid rgba(255,255,255,0.06)" }}
+          style={{ borderRight: "1px solid rgba(155,77,202,0.12)" }}
         >
           <div className="space-y-5">
             {/* Project Index & Title */}
             <div>
               <div className="text-[11px] font-mono mb-1 tracking-widest uppercase" style={{ color: meta.accent }}>
-                PROJECT 0{index + 1} // {project.subtitle}
+                ISLAND LAB 0{index + 1} // {project.subtitle}
               </div>
               <h3 className="text-2xl sm:text-3xl font-extrabold text-[#F1F0EB] tracking-tight leading-tight">
                 {project.title}
               </h3>
-              <p className="text-xs font-mono text-[#8A9080] mt-1.5 leading-relaxed">
+              <p className="text-xs font-mono text-[#9D8EB5] mt-1.5 leading-relaxed">
                 {project.tagline}
               </p>
             </div>
 
             {/* Description */}
-            <p className="text-sm text-[#C8D4B8] leading-relaxed">
+            <p className="text-sm text-[#D8CFE5] leading-relaxed">
               {project.description}
             </p>
 
@@ -109,16 +115,16 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
             <div
               className="p-4 space-y-1.5"
               style={{
-                background: "rgba(255,170,0,0.05)",
-                borderLeft: "3px solid #FFAA00",
-                borderTop: "1px solid rgba(255,170,0,0.15)",
+                background: "rgba(155,77,202,0.06)",
+                borderLeft: `3px solid ${meta.accent}`,
+                borderTop: "1px solid rgba(155,77,202,0.15)",
                 borderBottom: "1px solid rgba(0,0,0,0.4)",
               }}
             >
-              <div className="text-[10px] font-mono text-[#FFAA00] uppercase tracking-widest font-bold">
-                ⚠ Problem Being Addressed
+              <div className="text-[10px] font-mono text-[#E0AAFF] uppercase tracking-widest font-bold">
+                ⚠ Void Challenge Addressed
               </div>
-              <p className="text-xs text-[#8A9080] leading-relaxed">
+              <p className="text-xs text-[#9D8EB5] leading-relaxed">
                 {project.problem}
               </p>
             </div>
@@ -134,12 +140,12 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
                     key={idx}
                     className="flex items-start gap-2.5 px-3 py-2"
                     style={{
-                      background: "rgba(13,15,13,0.8)",
+                      background: "rgba(6,6,10,0.85)",
                       borderLeft: `2px solid ${meta.border}`,
                     }}
                   >
                     <span className="text-xs mt-0.5 shrink-0" style={{ color: meta.accent }}>✔</span>
-                    <span className="text-xs text-[#C8D4B8] leading-relaxed">{item}</span>
+                    <span className="text-xs text-[#D8CFE5] leading-relaxed">{item}</span>
                   </div>
                 ))}
               </div>
@@ -147,15 +153,15 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
 
             {/* Key Engineering Decisions */}
             <div>
-              <h4 className="text-[11px] font-mono uppercase tracking-widest mb-2.5 text-[#8A9080]">
+              <h4 className="text-[11px] font-mono uppercase tracking-widest mb-2.5 text-[#9D8EB5]">
                 ◈ KEY ARCHITECTURAL DECISIONS
               </h4>
               <ul className="space-y-1.5">
                 {project.keyDecisions.map((decision, dIdx) => {
                   const parts = decision.split(":");
                   return (
-                    <li key={dIdx} className="text-xs text-[#8A9080] leading-relaxed">
-                      <strong className="text-[#C8D4B8] font-mono">{parts[0]}:</strong>
+                    <li key={dIdx} className="text-xs text-[#9D8EB5] leading-relaxed">
+                      <strong className="text-[#E0AAFF] font-mono">{parts[0]}:</strong>
                       <span>{parts.slice(1).join(":")}</span>
                     </li>
                   );
@@ -165,7 +171,7 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
 
             {/* Tech Stack Chips */}
             <div>
-              <div className="text-[11px] font-mono text-[#5A6A5A] uppercase tracking-widest mb-2">
+              <div className="text-[11px] font-mono text-[#7C6A95] uppercase tracking-widest mb-2">
                 EQUIPPED TECH STACK
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -176,10 +182,10 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
                     style={{
                       background: meta.bg,
                       border: `1px solid ${meta.border}`,
-                      borderTop: "1px solid rgba(255,255,255,0.1)",
-                      borderLeft: "1px solid rgba(255,255,255,0.08)",
-                      borderBottom: "2px solid rgba(0,0,0,0.5)",
-                      borderRight: "2px solid rgba(0,0,0,0.5)",
+                      borderTop: "1px solid rgba(224,170,255,0.2)",
+                      borderLeft: "1px solid rgba(224,170,255,0.15)",
+                      borderBottom: "2px solid rgba(0,0,0,0.6)",
+                      borderRight: "2px solid rgba(0,0,0,0.6)",
                     }}
                   >
                     {tech}
@@ -190,24 +196,24 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
           </div>
 
           {/* Action Links */}
-          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-white/5">
+          <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-[#3A1F5C]/40">
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-4 py-2 text-xs font-mono font-semibold transition-all"
               style={{
-                background: "rgba(26,28,26,0.9)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderTop: "1px solid rgba(255,255,255,0.12)",
-                borderBottom: "2px solid rgba(0,0,0,0.5)",
-                borderRight: "2px solid rgba(0,0,0,0.5)",
+                background: "rgba(18,14,28,0.9)",
+                border: "1px solid rgba(155,77,202,0.3)",
+                borderTop: "1px solid rgba(224,170,255,0.2)",
+                borderBottom: "2px solid rgba(0,0,0,0.6)",
+                borderRight: "2px solid rgba(0,0,0,0.6)",
                 color: "#F1F0EB",
               }}
             >
               <Github className="w-4 h-4" />
               <span>Source Code</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#8A9080]" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#9D8EB5]" />
             </a>
 
             {project.liveUrl && (
@@ -218,12 +224,12 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
                 className="inline-flex items-center gap-2 px-4 py-2 text-xs font-mono font-bold transition-all"
                 style={{
                   background: meta.accent,
-                  color: "#0D0F0D",
+                  color: "#060608",
                   border: `1px solid ${meta.border}`,
-                  borderTop: "1px solid rgba(255,255,255,0.3)",
-                  borderLeft: "1px solid rgba(255,255,255,0.2)",
-                  borderBottom: "2px solid rgba(0,0,0,0.5)",
-                  borderRight: "2px solid rgba(0,0,0,0.5)",
+                  borderTop: "1px solid rgba(255,255,255,0.4)",
+                  borderLeft: "1px solid rgba(255,255,255,0.3)",
+                  borderBottom: "2px solid rgba(0,0,0,0.7)",
+                  borderRight: "2px solid rgba(0,0,0,0.7)",
                 }}
               >
                 <ExternalLink className="w-4 h-4" />
@@ -236,7 +242,7 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
         {/* Right Column: Interactive Minecraft Laboratory Visual Simulator */}
         <div
           className="lg:col-span-7 xl:col-span-7 p-4 sm:p-6 lg:p-8 flex items-center justify-center"
-          style={{ background: "rgba(10,12,10,0.85)" }}
+          style={{ background: "rgba(6,5,10,0.92)" }}
         >
           {renderInteractiveLab()}
         </div>
