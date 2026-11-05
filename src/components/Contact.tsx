@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, Phone, Send, Copy, Check } from "lucide-react";
+import { Mail, Phone, Send, Copy, Check, Flame, Sparkles } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
 import { PERSONAL_INFO } from "@/data/portfolio";
 
 export default function Contact() {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
+  const [portalIgnited, setPortalIgnited] = useState(true);
   const [roleIntent, setRoleIntent] = useState("Software Development Opportunity");
   const [visitorName, setVisitorName] = useState("");
   const [customNote, setCustomNote] = useState("");
@@ -25,314 +26,546 @@ export default function Contact() {
   };
 
   const mailtoSubject = encodeURIComponent(
-    `[Inquiry] ${roleIntent} — ${visitorName ? visitorName : "Team / Recruiter"}`
+    `[Inquiry] ${roleIntent} — ${visitorName ? visitorName : "Engineering Team / Recruiter"}`
   );
   const mailtoBody = encodeURIComponent(
-    `Hi Siddhant,\n\nI reviewed your portfolio and would like to connect regarding a ${roleIntent}.\n\n${
+    `Hi Siddhant,\n\nI stepped through your portfolio portal and would like to connect regarding a ${roleIntent}.\n\n${
       customNote ? `Notes: ${customNote}\n\n` : ""
     }Best regards,\n${visitorName || "Hiring Team"}`
   );
   const mailtoLink = `mailto:${PERSONAL_INFO.email}?subject=${mailtoSubject}&body=${mailtoBody}`;
 
-  /* Portal SVG visual — original design, NOT copying Minecraft IP */
-  const PortalVisual = () => (
-    <div className="relative w-full flex items-center justify-center py-6">
-      <div className="relative">
-        {/* Outer ring */}
-        <svg width="220" height="220" viewBox="0 0 220 220" className="absolute inset-0" style={{ animation: "spin 20s linear infinite" }}>
-          <defs>
-            <linearGradient id="portalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#A0D060" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="#57E0E0" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#A0D060" stopOpacity="0.8" />
-            </linearGradient>
-          </defs>
-          <circle cx="110" cy="110" r="100" fill="none" stroke="url(#portalGrad)" strokeWidth="2" strokeDasharray="8 6" />
-        </svg>
-        {/* Middle ring */}
-        <svg width="220" height="220" viewBox="0 0 220 220" className="absolute inset-0" style={{ animation: "spin 12s linear infinite reverse" }}>
-          <circle cx="110" cy="110" r="78" fill="none" stroke="rgba(87,224,224,0.4)" strokeWidth="1.5" strokeDasharray="4 8" />
-        </svg>
-        {/* Inner content */}
-        <div
-          className="relative z-10 w-[220px] h-[220px] flex flex-col items-center justify-center text-center"
-          style={{
-            background: "radial-gradient(ellipse, rgba(87,224,224,0.08) 0%, rgba(13,15,13,0.95) 70%)",
-          }}
-        >
-          <div className="text-5xl mb-2" style={{ filter: "drop-shadow(0 0 12px rgba(87,224,224,0.6))" }}>🌀</div>
-          <span className="text-xs font-mono" style={{ color: "#57E0E0" }}>PORTAL ACTIVE</span>
-          <span className="text-[10px] font-mono text-[#5A6A5A] mt-1">DIMENSION: CONTACT</span>
-        </div>
-      </div>
-      <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+  // Pixel-art Obsidian Block component
+  const ObsidianBlock = ({ crying = false }: { crying?: boolean }) => (
+    <div
+      className="w-10 h-10 sm:w-12 sm:h-12 relative flex items-center justify-center select-none"
+      style={{
+        background: crying
+          ? "linear-gradient(135deg, #1C0F2B 0%, #0F0817 50%, #2A0E44 100%)"
+          : "linear-gradient(135deg, #181124 0%, #0D0814 50%, #130B1C 100%)",
+        border: "2px solid #2D1A3F",
+        borderTopColor: crying ? "#C042FF" : "#3D2455",
+        borderLeftColor: crying ? "#8A2BE2" : "#3D2455",
+        borderBottomColor: "#050308",
+        borderRightColor: "#050308",
+        boxShadow: crying ? "inset 0 0 8px #C042FF, 0 0 6px rgba(192,66,255,0.4)" : "none",
+      }}
+    >
+      {/* Texture flecks */}
+      <div className="absolute top-1.5 left-2 w-1.5 h-1.5 bg-[#4A2B68] opacity-60" />
+      <div className="absolute bottom-2 right-2 w-2 h-1 bg-[#2C1840] opacity-80" />
+      {crying && (
+        <>
+          <div className="absolute inset-1 border border-[#C042FF]/30" />
+          <div className="w-1.5 h-1.5 rounded-full bg-[#E085FF] animate-pulse shadow-[0_0_8px_#C042FF]" />
+        </>
+      )}
     </div>
   );
 
-  const blockStyle = {
-    background: "rgba(20,22,20,0.95)",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderTop: "1px solid rgba(255,255,255,0.12)",
-    borderLeft: "1px solid rgba(255,255,255,0.1)",
-    borderBottom: "2px solid rgba(0,0,0,0.6)",
-    borderRight: "2px solid rgba(0,0,0,0.6)",
-  };
-
-  const inputStyle = {
-    background: "rgba(13,15,13,0.9)",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderTop: "1px solid rgba(0,0,0,0.5)",
-    borderLeft: "1px solid rgba(0,0,0,0.4)",
-    color: "#F1F0EB",
-    outline: "none",
-  };
-
   return (
-    <section id="contact" className="py-24 relative overflow-hidden" style={{ borderTop: "1px solid rgba(93,138,60,0.2)" }}>
-      {/* Ambient portal glow */}
+    <section id="contact" className="py-24 relative overflow-hidden" style={{ borderTop: "1px solid rgba(168,69,255,0.25)" }}>
+      {/* Nether Dimension Background Ambience */}
       <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] pointer-events-none"
-        style={{ background: "radial-gradient(ellipse, rgba(87,224,224,0.04) 0%, transparent 70%)" }}
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: portalIgnited
+            ? "radial-gradient(ellipse at 50% 60%, rgba(138,43,226,0.12) 0%, rgba(60,10,80,0.05) 50%, transparent 80%)"
+            : "none",
+        }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-        {/* Coordinate label */}
-        <div className="mb-3 font-mono text-[11px] text-[#5D8A3C] tracking-wider">
-          ◈ SECTOR: PORTAL_GATEWAY // X:256 Y:0 Z:256
+        {/* Sector Coordinate Label — 1 Nether Block = 8 Overworld Blocks */}
+        <div className="mb-3 font-mono text-[11px] text-[#A855F7] tracking-wider flex items-center gap-3 flex-wrap">
+          <span>◈ SECTOR: NETHER_PORTAL_GATEWAY</span>
+          <span className="text-[#6E6E6E]">//</span>
+          <span className="text-[#A0D060]">OVERWORLD: [X: 256, Y: 64, Z: 256]</span>
+          <span className="text-[#6E6E6E]">➔</span>
+          <span className="text-[#C084FC]">NETHER: [X: 32, Y: 80, Z: 32]</span>
+          <span className="text-[10px] text-[#8A9080]">(1:8 Ratio)</span>
         </div>
 
         {/* Header */}
-        <div className="max-w-3xl mb-14 text-left">
-          <div
-            className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono text-[#57E0E0] mb-4"
-            style={{
-              background: "rgba(87,224,224,0.1)",
-              border: "1px solid rgba(87,224,224,0.4)",
-              borderTop: "1px solid rgba(87,224,224,0.2)",
-              borderLeft: "1px solid rgba(87,224,224,0.2)",
-              borderBottom: "1px solid rgba(0,0,0,0.5)",
-              borderRight: "1px solid rgba(0,0,0,0.5)",
-            }}
-          >
-            <span>🌀</span>
-            <span>PORTAL GATEWAY</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-[#F1F0EB] tracking-tight">
-            Have a good problem?<br />
-            <span style={{ color: "#A0D060" }}>Let&apos;s build something.</span>
-          </h2>
-          <p className="text-base text-[#8A9080] mt-3 max-w-2xl leading-relaxed font-mono">
-            Open for software development opportunities, collaborations, and meaningful engineering challenges.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 text-left">
-
-          {/* Left — Direct Contacts */}
-          <div className="lg:col-span-5 space-y-4">
-
-            {/* Email */}
-            <div className="p-5" style={blockStyle}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div
-                    className="w-9 h-9 flex items-center justify-center"
-                    style={{ background: "rgba(93,138,60,0.15)", border: "1px solid rgba(160,208,96,0.3)" }}
-                  >
-                    <Mail className="w-4 h-4" style={{ color: "#A0D060" }} />
-                  </div>
-                  <span className="text-[11px] font-mono text-[#8A9080] uppercase tracking-wider">Direct Email</span>
-                </div>
-                <button
-                  onClick={copyEmail}
-                  className="px-2 py-1 text-[11px] font-mono flex items-center gap-1.5 transition-all"
-                  style={blockStyle}
-                >
-                  {copiedEmail ? <Check className="w-3 h-3 text-[#A0D060]" /> : <Copy className="w-3 h-3 text-[#8A9080]" />}
-                  <span style={{ color: copiedEmail ? "#A0D060" : "#8A9080" }}>{copiedEmail ? "Copied!" : "Copy"}</span>
-                </button>
-              </div>
-              <a
-                href={`mailto:${PERSONAL_INFO.email}`}
-                className="text-sm font-bold text-[#F1F0EB] hover:text-[#A0D060] transition-colors break-all"
-              >
-                {PERSONAL_INFO.email}
-              </a>
-            </div>
-
-            {/* Phone */}
-            <div className="p-5" style={blockStyle}>
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2.5">
-                  <div
-                    className="w-9 h-9 flex items-center justify-center"
-                    style={{ background: "rgba(93,138,60,0.15)", border: "1px solid rgba(160,208,96,0.3)" }}
-                  >
-                    <Phone className="w-4 h-4" style={{ color: "#A0D060" }} />
-                  </div>
-                  <span className="text-[11px] font-mono text-[#8A9080] uppercase tracking-wider">Phone</span>
-                </div>
-                <button
-                  onClick={copyPhone}
-                  className="px-2 py-1 text-[11px] font-mono flex items-center gap-1.5 transition-all"
-                  style={blockStyle}
-                >
-                  {copiedPhone ? <Check className="w-3 h-3 text-[#A0D060]" /> : <Copy className="w-3 h-3 text-[#8A9080]" />}
-                  <span style={{ color: copiedPhone ? "#A0D060" : "#8A9080" }}>{copiedPhone ? "Copied!" : "Copy"}</span>
-                </button>
-              </div>
-              <a
-                href={`tel:${PERSONAL_INFO.phone}`}
-                className="text-sm font-bold text-[#F1F0EB] hover:text-[#A0D060] transition-colors"
-              >
-                {PERSONAL_INFO.phone}
-              </a>
-            </div>
-
-            {/* LinkedIn + GitHub */}
-            <div className="grid grid-cols-2 gap-3">
-              <a
-                href={PERSONAL_INFO.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-4 flex flex-col items-start gap-2 transition-all group"
-                style={{ ...blockStyle, borderTop: "2px solid rgba(87,224,224,0.3)" }}
-              >
-                <Linkedin className="w-5 h-5 text-[#57E0E0]" />
-                <span className="text-xs font-mono text-[#F1F0EB] group-hover:text-[#57E0E0] transition-colors">LinkedIn</span>
-                <span className="text-[10px] font-mono text-[#5A6A5A]">siddhant62632</span>
-              </a>
-              <a
-                href={PERSONAL_INFO.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-4 flex flex-col items-start gap-2 transition-all group"
-                style={{ ...blockStyle, borderTop: "2px solid rgba(160,208,96,0.3)" }}
-              >
-                <Github className="w-5 h-5 text-[#A0D060]" />
-                <span className="text-xs font-mono text-[#F1F0EB] group-hover:text-[#A0D060] transition-colors">GitHub</span>
-                <span className="text-[10px] font-mono text-[#5A6A5A]">siddhant1232</span>
-              </a>
-            </div>
-
-            {/* Portal visual on mobile */}
-            <div className="block lg:hidden">
-              <PortalVisual />
-            </div>
-          </div>
-
-          {/* Right — Email Dispatcher */}
-          <div className="lg:col-span-7">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 text-left">
+          <div className="max-w-3xl">
             <div
+              className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono text-[#D8B4FE] mb-4"
               style={{
-                background: "rgba(20,22,20,0.95)",
-                border: "1px solid rgba(93,138,60,0.25)",
-                borderTop: "2px solid rgba(160,208,96,0.3)",
-                borderLeft: "1px solid rgba(160,208,96,0.1)",
-                borderBottom: "3px solid rgba(0,0,0,0.7)",
-                borderRight: "3px solid rgba(0,0,0,0.7)",
+                background: "rgba(168,85,247,0.15)",
+                border: "1px solid rgba(168,85,247,0.4)",
+                borderTop: "1px solid rgba(216,180,254,0.4)",
+                borderLeft: "1px solid rgba(216,180,254,0.3)",
+                borderBottom: "1px solid rgba(0,0,0,0.6)",
+                borderRight: "1px solid rgba(0,0,0,0.6)",
               }}
             >
-              {/* Panel header */}
-              <div
-                className="px-6 py-3 flex items-center gap-2"
-                style={{
-                  background: "rgba(93,138,60,0.12)",
-                  borderBottom: "1px solid rgba(93,138,60,0.2)",
-                }}
-              >
-                <span className="text-sm">📨</span>
-                <span className="text-xs font-mono text-[#A0D060] uppercase tracking-wider">Message Dispatcher</span>
+              <span>🟣</span>
+              <span>DIMENSIONAL GATEWAY</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-extrabold text-[#F1F0EB] tracking-tight">
+              Step through the Nether Portal.<br />
+              <span className="text-[#C084FC]">Let&apos;s build something powerful.</span>
+            </h2>
+            <p className="text-sm sm:text-base text-[#8A9080] mt-3 max-w-2xl leading-relaxed font-mono">
+              Have an engineering challenge, full-time role, or distributed systems problem? Transmit a dispatch across dimensions.
+            </p>
+          </div>
+
+          {/* Flint & Steel Ignition Toggle */}
+          <div
+            onClick={() => setPortalIgnited(!portalIgnited)}
+            className="flex items-center gap-2.5 px-4 py-2.5 cursor-pointer select-none transition-all self-start lg:self-auto"
+            style={{
+              background: portalIgnited ? "rgba(168,85,247,0.2)" : "rgba(26,28,26,0.8)",
+              border: portalIgnited ? "1px solid #A855F7" : "1px solid rgba(255,255,255,0.1)",
+              borderTopColor: portalIgnited ? "#D8B4FE" : "#333",
+              borderBottomColor: "#111",
+              borderRightColor: "#111",
+              boxShadow: portalIgnited ? "0 0 15px rgba(168,85,247,0.4)" : "none",
+            }}
+            title="Click to toggle Flint & Steel ignition"
+          >
+            <Flame className={`w-4 h-4 ${portalIgnited ? "text-[#C084FC] fill-current animate-pulse" : "text-[#6E6E6E]"}`} />
+            <div className="font-mono text-xs">
+              <span className="text-[#8A9080]">FLINT &amp; STEEL: </span>
+              <span className={portalIgnited ? "text-[#C084FC] font-bold" : "text-[#6E6E6E]"}>
+                [{portalIgnited ? "PORTAL IGNITED" : "EXTINGUISHED"}]
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* ============================================================ */}
+        {/* MAIN GRID: THE NETHER PORTAL FRAME + MESSAGE DISPATCHER     */}
+        {/* ============================================================ */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start text-left">
+
+          {/* Left Column: Authentic Minecraft Nether Portal Frame Visual */}
+          <div className="lg:col-span-5 flex flex-col items-center">
+            <div className="text-[10px] font-mono text-[#A855F7] uppercase tracking-wider mb-3">
+              ▸ OBSIDIAN FRAME // 4×5 PORTAL STRUCTURE
+            </div>
+
+            {/* The 4x5 Obsidian Nether Portal */}
+            <div
+              className="relative p-2 select-none"
+              style={{
+                background: "rgba(10,5,15,0.9)",
+                border: "2px solid #2D1A3F",
+                boxShadow: portalIgnited ? "0 0 40px rgba(147,51,234,0.3)" : "none",
+              }}
+            >
+              {/* Top Row: 4 Obsidian Blocks */}
+              <div className="flex">
+                <ObsidianBlock crying />
+                <ObsidianBlock />
+                <ObsidianBlock />
+                <ObsidianBlock crying />
               </div>
 
-              <div className="p-6 space-y-4">
-                {/* Your name */}
+              {/* Middle 3 Rows: Left Block + Portal Interior + Right Block */}
+              <div className="flex">
+                {/* Left Column Obsidian */}
+                <div className="flex flex-col">
+                  <ObsidianBlock />
+                  <ObsidianBlock />
+                  <ObsidianBlock />
+                </div>
+
+                {/* The Swirling Purple Portal Interior (2 blocks wide, 3 blocks tall) */}
+                <div
+                  className="relative w-20 sm:w-24 h-[120px] sm:h-[144px] overflow-hidden flex flex-col items-center justify-center transition-all duration-700"
+                  style={{
+                    background: portalIgnited
+                      ? "linear-gradient(180deg, #3B0764 0%, #6B21A8 30%, #A855F7 50%, #581C87 80%, #2E1065 100%)"
+                      : "#0A0A0E",
+                    boxShadow: portalIgnited
+                      ? "inset 0 0 20px rgba(216,180,254,0.8), 0 0 25px rgba(168,85,247,0.6)"
+                      : "inset 0 0 10px rgba(0,0,0,0.9)",
+                  }}
+                >
+                  {portalIgnited ? (
+                    <>
+                      {/* Swirling Wavy Plasma Overlay */}
+                      <div
+                        className="absolute inset-0 opacity-80"
+                        style={{
+                          backgroundImage:
+                            "repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(216,180,254,0.3) 8px, rgba(216,180,254,0.3) 16px)",
+                          animation: "plasma-drift 6s linear infinite",
+                        }}
+                      />
+
+                      {/* Rising Nether Particles */}
+                      {[
+                        { left: "20%", delay: "0s", size: "3px" },
+                        { left: "45%", delay: "1.2s", size: "4px" },
+                        { left: "70%", delay: "0.5s", size: "2px" },
+                        { left: "30%", delay: "2.1s", size: "3px" },
+                        { left: "60%", delay: "1.8s", size: "4px" },
+                        { left: "80%", delay: "0.9s", size: "2px" },
+                      ].map((p, i) => (
+                        <div
+                          key={i}
+                          className="absolute bg-[#F3E8FF] rounded-none opacity-80"
+                          style={{
+                            left: p.left,
+                            bottom: "0px",
+                            width: p.size,
+                            height: p.size,
+                            boxShadow: "0 0 6px #E9D5FF",
+                            animation: `nether-float 2.5s ease-out infinite ${p.delay}`,
+                          }}
+                        />
+                      ))}
+
+                      {/* Portal Core Pulse */}
+                      <div className="relative z-10 text-center font-mono">
+                        <span className="text-[10px] font-bold text-[#FFFFFF] tracking-widest block drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
+                          ACTIVE
+                        </span>
+                        <span className="text-[8px] text-[#E9D5FF] block mt-0.5">
+                          DIM: NETHER
+                        </span>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-center font-mono text-[9px] text-[#555]">
+                      <span>UNLIT</span>
+                      <span className="block text-[8px] mt-1 text-[#444]">CLICK IGNITE</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Right Column Obsidian */}
+                <div className="flex flex-col">
+                  <ObsidianBlock />
+                  <ObsidianBlock />
+                  <ObsidianBlock />
+                </div>
+              </div>
+
+              {/* Bottom Row: 4 Obsidian Blocks */}
+              <div className="flex">
+                <ObsidianBlock crying />
+                <ObsidianBlock />
+                <ObsidianBlock />
+                <ObsidianBlock crying />
+              </div>
+            </div>
+
+            {/* Portal Transmission Status */}
+            <div
+              className="w-full mt-4 p-3 font-mono text-xs text-center border"
+              style={{
+                background: "rgba(20,10,30,0.8)",
+                borderColor: portalIgnited ? "rgba(168,85,247,0.3)" : "rgba(255,255,255,0.06)",
+                color: portalIgnited ? "#D8B4FE" : "#6E6E6E",
+              }}
+            >
+              {portalIgnited ? (
+                <span>⚡ TRANS-DIMENSIONAL DISPATCH READY</span>
+              ) : (
+                <span>○ PORTAL INACTIVE — USE FLINT &amp; STEEL</span>
+              )}
+            </div>
+
+            {/* Direct Dimensional Tablets (Contact Cards) */}
+            <div className="w-full mt-4 space-y-2.5">
+              {/* Email Tablet */}
+              <div
+                className="p-3.5 flex items-center justify-between"
+                style={{
+                  background: "rgba(18,12,25,0.95)",
+                  border: "1px solid rgba(168,85,247,0.3)",
+                  borderTop: "2px solid #A855F7",
+                  borderBottom: "2px solid rgba(0,0,0,0.6)",
+                }}
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div
+                    className="w-8 h-8 flex items-center justify-center shrink-0"
+                    style={{ background: "rgba(168,85,247,0.2)", border: "1px solid #A855F7" }}
+                  >
+                    <Mail className="w-4 h-4 text-[#C084FC]" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-mono text-[#8A9080] uppercase block">
+                      Direct Email
+                    </span>
+                    <a
+                      href={`mailto:${PERSONAL_INFO.email}`}
+                      className="text-xs sm:text-sm font-bold text-[#F1F0EB] hover:text-[#C084FC] transition-colors truncate block"
+                    >
+                      {PERSONAL_INFO.email}
+                    </a>
+                  </div>
+                </div>
+
+                <button
+                  onClick={copyEmail}
+                  className="px-2.5 py-1 text-[11px] font-mono flex items-center gap-1.5 transition-all shrink-0 ml-2"
+                  style={{
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    color: copiedEmail ? "#A0D060" : "#C8D4B8",
+                  }}
+                  title="Copy email"
+                >
+                  {copiedEmail ? <Check className="w-3 h-3 text-[#A0D060]" /> : <Copy className="w-3 h-3 text-[#8A9080]" />}
+                  <span>{copiedEmail ? "Copied" : "Copy"}</span>
+                </button>
+              </div>
+
+              {/* Phone Tablet */}
+              <div
+                className="p-3.5 flex items-center justify-between"
+                style={{
+                  background: "rgba(18,12,25,0.95)",
+                  border: "1px solid rgba(168,85,247,0.3)",
+                  borderTop: "2px solid #A855F7",
+                  borderBottom: "2px solid rgba(0,0,0,0.6)",
+                }}
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div
+                    className="w-8 h-8 flex items-center justify-center shrink-0"
+                    style={{ background: "rgba(168,85,247,0.2)", border: "1px solid #A855F7" }}
+                  >
+                    <Phone className="w-4 h-4 text-[#C084FC]" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] font-mono text-[#8A9080] uppercase block">
+                      Phone Comm Link
+                    </span>
+                    <a
+                      href={`tel:${PERSONAL_INFO.phone}`}
+                      className="text-xs sm:text-sm font-bold text-[#F1F0EB] hover:text-[#C084FC] transition-colors truncate block"
+                    >
+                      {PERSONAL_INFO.phone}
+                    </a>
+                  </div>
+                </div>
+
+                <button
+                  onClick={copyPhone}
+                  className="px-2.5 py-1 text-[11px] font-mono flex items-center gap-1.5 transition-all shrink-0 ml-2"
+                  style={{
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    color: copiedPhone ? "#A0D060" : "#C8D4B8",
+                  }}
+                  title="Copy phone number"
+                >
+                  {copiedPhone ? <Check className="w-3 h-3 text-[#A0D060]" /> : <Copy className="w-3 h-3 text-[#8A9080]" />}
+                  <span>{copiedPhone ? "Copied" : "Copy"}</span>
+                </button>
+              </div>
+
+              {/* Social Tablets: LinkedIn & GitHub */}
+              <div className="grid grid-cols-2 gap-2.5">
+                <a
+                  href={PERSONAL_INFO.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 flex items-center gap-2.5 transition-all group"
+                  style={{
+                    background: "rgba(18,12,25,0.95)",
+                    border: "1px solid rgba(87,224,224,0.3)",
+                    borderTop: "2px solid #57E0E0",
+                  }}
+                >
+                  <Linkedin className="w-4 h-4 text-[#57E0E0]" />
+                  <div className="min-w-0 text-left">
+                    <span className="text-[10px] font-mono text-[#8A9080] block">PROFESSIONAL</span>
+                    <span className="text-xs font-mono font-bold text-[#F1F0EB] group-hover:text-[#57E0E0] truncate block">
+                      LinkedIn
+                    </span>
+                  </div>
+                </a>
+
+                <a
+                  href={PERSONAL_INFO.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 flex items-center gap-2.5 transition-all group"
+                  style={{
+                    background: "rgba(18,12,25,0.95)",
+                    border: "1px solid rgba(160,208,96,0.3)",
+                    borderTop: "2px solid #A0D060",
+                  }}
+                >
+                  <Github className="w-4 h-4 text-[#A0D060]" />
+                  <div className="min-w-0 text-left">
+                    <span className="text-[10px] font-mono text-[#8A9080] block">CODE REALM</span>
+                    <span className="text-xs font-mono font-bold text-[#F1F0EB] group-hover:text-[#A0D060] truncate block">
+                      GitHub
+                    </span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Nether Portal Message Dispatcher */}
+          <div className="lg:col-span-7">
+            <div
+              className="p-6 sm:p-8"
+              style={{
+                background: "rgba(18,12,25,0.98)",
+                border: "2px solid #2D1A3F",
+                borderTop: "3px solid #C084FC",
+                borderLeft: "2px solid rgba(192,132,252,0.3)",
+                borderBottom: "3px solid #050308",
+                borderRight: "3px solid #050308",
+                boxShadow: portalIgnited ? "0 0 30px rgba(147,51,234,0.15)" : "none",
+              }}
+            >
+              {/* Dispatcher Header */}
+              <div
+                className="pb-4 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xl">📨</span>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-[#F1F0EB] font-mono tracking-tight">
+                      NETHER DISPATCH CONSOLE // TRANSMIT MESSAGE
+                    </h3>
+                    <p className="text-[11px] font-mono text-[#8A9080]">
+                      Transmits a pre-formatted cryptographic dispatch directly to Siddhant&apos;s primary inbox.
+                    </p>
+                  </div>
+                </div>
+
+                <span
+                  className="px-2.5 py-1 text-[10px] font-mono font-bold self-start sm:self-auto"
+                  style={{
+                    background: "rgba(168,85,247,0.2)",
+                    border: "1px solid #A855F7",
+                    color: "#D8B4FE",
+                  }}
+                >
+                  CHANNEL: SECURE
+                </span>
+              </div>
+
+              {/* Form Inputs */}
+              <div className="space-y-4">
+                {/* Your Name */}
                 <div>
-                  <label className="block text-[11px] font-mono text-[#8A9080] uppercase tracking-wider mb-1.5">
-                    Your Name / Organization
+                  <label className="block text-[11px] font-mono text-[#C084FC] uppercase tracking-wider mb-1.5 font-bold">
+                    ▸ SENDER IDENTITY / ORGANIZATION
                   </label>
                   <input
                     type="text"
                     value={visitorName}
                     onChange={(e) => setVisitorName(e.target.value)}
-                    placeholder="e.g. Alex Chen, TechCorp HR"
-                    className="w-full px-4 py-2.5 text-sm font-mono placeholder:text-[#4A5A4A]"
-                    style={inputStyle}
+                    placeholder="e.g. Sarah Jenkins (Head of Engineering) / TechCorp"
+                    className="w-full px-4 py-2.5 text-xs sm:text-sm font-mono placeholder:text-[#554466] focus:outline-none"
+                    style={{
+                      background: "rgba(10,5,15,0.9)",
+                      border: "1px solid rgba(168,85,247,0.3)",
+                      borderTopColor: "#050308",
+                      borderLeftColor: "#050308",
+                      color: "#F1F0EB",
+                    }}
                   />
                 </div>
 
-                {/* Role Intent */}
+                {/* Role / Inquiry Intent */}
                 <div>
-                  <label className="block text-[11px] font-mono text-[#8A9080] uppercase tracking-wider mb-1.5">
-                    Inquiry Type
+                  <label className="block text-[11px] font-mono text-[#C084FC] uppercase tracking-wider mb-1.5 font-bold">
+                    ▸ INQUIRY TYPE / DIMENSIONAL INTENT
                   </label>
                   <select
                     value={roleIntent}
                     onChange={(e) => setRoleIntent(e.target.value)}
-                    className="w-full px-4 py-2.5 text-sm font-mono"
-                    style={inputStyle}
+                    className="w-full px-4 py-2.5 text-xs sm:text-sm font-mono focus:outline-none cursor-pointer"
+                    style={{
+                      background: "rgba(10,5,15,0.9)",
+                      border: "1px solid rgba(168,85,247,0.3)",
+                      borderTopColor: "#050308",
+                      borderLeftColor: "#050308",
+                      color: "#F1F0EB",
+                    }}
                   >
                     <option>Software Development Opportunity</option>
-                    <option>Full-Time Engineering Role</option>
-                    <option>Internship Opportunity</option>
-                    <option>Freelance Project</option>
-                    <option>Technical Collaboration</option>
-                    <option>Open Source Contribution</option>
-                    <option>General Inquiry</option>
+                    <option>Full-Time Engineering Role (Backend / Full Stack)</option>
+                    <option>Engineering Internship (2026 / 2027)</option>
+                    <option>AI Agent / Distributed Systems Architecture Collaboration</option>
+                    <option>Freelance / Production Build Engagement</option>
+                    <option>Open Source Contribution &amp; General Inquiry</option>
                   </select>
                 </div>
 
                 {/* Custom Note */}
                 <div>
-                  <label className="block text-[11px] font-mono text-[#8A9080] uppercase tracking-wider mb-1.5">
-                    Brief Note (Optional)
+                  <label className="block text-[11px] font-mono text-[#C084FC] uppercase tracking-wider mb-1.5 font-bold">
+                    ▸ DISPATCH NOTES // BRIEF BRIEFING
                   </label>
                   <textarea
-                    rows={3}
+                    rows={4}
                     value={customNote}
                     onChange={(e) => setCustomNote(e.target.value)}
-                    placeholder="Tell me about the role, tech stack, or problem you're solving..."
-                    className="w-full px-4 py-2.5 text-sm font-mono placeholder:text-[#4A5A4A] resize-none"
-                    style={inputStyle}
+                    placeholder="Tell me a bit about the role, tech stack requirements, or engineering problem you're tackling..."
+                    className="w-full px-4 py-2.5 text-xs sm:text-sm font-mono placeholder:text-[#554466] focus:outline-none resize-none leading-relaxed"
+                    style={{
+                      background: "rgba(10,5,15,0.9)",
+                      border: "1px solid rgba(168,85,247,0.3)",
+                      borderTopColor: "#050308",
+                      borderLeftColor: "#050308",
+                      color: "#F1F0EB",
+                    }}
                   />
                 </div>
 
-                {/* CTA */}
+                {/* Transmission Action Bar */}
                 <div
-                  className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-3"
+                  className="pt-5 flex flex-col sm:flex-row items-center justify-between gap-4"
                   style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
                 >
-                  <span className="text-[11px] font-mono text-[#5A6A5A] text-center sm:text-left">
-                    Opens mailto to <span style={{ color: "#A0D060" }}>{PERSONAL_INFO.email}</span>
-                  </span>
+                  <div className="font-mono text-[11px] text-[#8A9080] text-center sm:text-left">
+                    <div>Receiver: <strong className="text-[#C084FC]">{PERSONAL_INFO.email}</strong></div>
+                    <div className="text-[10px] text-[#554466]">Opens native mail client with formatted subject &amp; body</div>
+                  </div>
+
                   <a
                     href={mailtoLink}
-                    className="inline-flex items-center gap-2 px-6 py-3 font-semibold text-sm font-mono transition-all shrink-0"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 font-mono font-bold text-xs sm:text-sm text-[#0D0814] transition-all shrink-0"
                     style={{
-                      background: "#A0D060",
-                      color: "#0D0F0D",
-                      border: "1px solid rgba(160,208,96,0.6)",
-                      borderTop: "1px solid rgba(255,255,255,0.3)",
-                      borderLeft: "1px solid rgba(255,255,255,0.2)",
-                      borderBottom: "3px solid rgba(0,0,0,0.5)",
-                      borderRight: "3px solid rgba(0,0,0,0.5)",
+                      background: "#C084FC",
+                      border: "2px solid #E9D5FF",
+                      borderBottomColor: "#581C87",
+                      borderRightColor: "#581C87",
+                      boxShadow: "0 0 15px rgba(192,132,252,0.4)",
                     }}
                   >
-                    <span>Send Message</span>
+                    <span>STEP INTO PORTAL &amp; SEND</span>
                     <Send className="w-4 h-4" />
                   </a>
                 </div>
               </div>
             </div>
-
-            {/* Portal visual on desktop */}
-            <div className="hidden lg:block mt-6">
-              <PortalVisual />
-            </div>
           </div>
         </div>
       </div>
+
+      {/* Nether Portal Animation Keyframes */}
+      <style>{`
+        @keyframes plasma-drift {
+          0% { background-position: 0 0; }
+          100% { background-position: 32px 64px; }
+        }
+        @keyframes nether-float {
+          0% { opacity: 0; transform: translateY(0) scale(0.6); }
+          30% { opacity: 1; }
+          80% { opacity: 0.8; }
+          100% { opacity: 0; transform: translateY(-110px) scale(1.2); }
+        }
+      `}</style>
     </section>
   );
 }
