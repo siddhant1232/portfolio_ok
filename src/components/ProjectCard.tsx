@@ -7,6 +7,7 @@ import { Project } from "@/data/portfolio";
 import CommandBlockLab from "./projects/CommandBlockLab";
 import RedstoneCircuitLab from "./projects/RedstoneCircuitLab";
 import EnchantmentTableLab from "./projects/EnchantmentTableLab";
+import PixelCharacterGuide from "./PixelCharacterGuide";
 
 interface LabMeta {
   theme: string;
@@ -23,7 +24,41 @@ interface ProjectCardProps {
   meta: LabMeta;
 }
 
+// Character commentary mapping per project
+const PROJECT_GUIDE_DATA: Record<string, {
+  dialogue: string;
+  tip: string;
+  mood: "engineer" | "wizard" | "focused";
+  pills: string[];
+}> = {
+  "multi-agent-system": {
+    dialogue: "I built a 3-agent research team using LangGraph! Instead of one model guessing, Planner maps the search, Researcher gathers verified sources, and Synthesizer writes the report.",
+    tip: "Hit 'Run Pipeline' in the Command Block to watch all 3 agents execute live!",
+    mood: "wizard",
+    pills: ["3 Autonomous Agents", "LangGraph State Machine", "Google Gemini API"],
+  },
+  "rate-limiter-microservices": {
+    dialogue: "When high traffic bursts hit an API, servers crash. I built this Redis sliding-window limiter with BullMQ queues to absorb massive bursts with sub-millisecond latency.",
+    tip: "Click 'Fire Burst' in the redstone circuit to test the token bucket!",
+    mood: "engineer",
+    pills: ["Redis Lua Scripts", "BullMQ Async Workers", "Microservices Gateway"],
+  },
+  "conciso-ai-summarizer": {
+    dialogue: "Reading dense 50+ page PDFs takes hours. Conciso slices documents with hierarchical chunking and generates executive summaries in seconds using Next.js and PostgreSQL.",
+    tip: "Swap the scrolls on the Enchantment Altar to test the summary generator!",
+    mood: "focused",
+    pills: ["50+ Page Documents", "PostgreSQL Data Layer", "Next.js 15 Full-Stack"],
+  },
+};
+
 export default function ProjectCard({ project, index, meta }: ProjectCardProps) {
+  const guide = PROJECT_GUIDE_DATA[project.id] || {
+    dialogue: project.description,
+    tip: "Explore the interactive lab on the right!",
+    mood: "engineer",
+    pills: project.techStack.slice(0, 3),
+  };
+
   const renderInteractiveLab = () => {
     switch (project.id) {
       case "multi-agent-system":
@@ -47,7 +82,7 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
         borderTop: `3px solid ${meta.accent}`,
       }}
     >
-      {/* Header Bar */}
+      {/* Top Header Bar */}
       <div
         className="px-5 py-2.5 flex items-center justify-between"
         style={{
@@ -69,12 +104,12 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
         </div>
       </div>
 
-      {/* Grid: Left Technical Spec + Right Interactive Lab Simulator */}
+      {/* Grid: Left Minimal Character Guide + Right Visual Interactive Sandbox */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
 
-        {/* Left Column: Streamlined Technical Spec */}
+        {/* Left Column: Character Guide & Visual Rough Idea */}
         <div
-          className="lg:col-span-5 p-5 sm:p-7 flex flex-col justify-between space-y-5"
+          className="lg:col-span-5 p-5 sm:p-6 flex flex-col justify-between space-y-5"
           style={{ borderRight: "1px solid rgba(155,77,202,0.12)" }}
         >
           <div className="space-y-4">
@@ -88,61 +123,52 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
               </p>
             </div>
 
-            {/* Concise Description */}
-            <p className="text-xs sm:text-sm text-[#C8BFD6] leading-relaxed">
-              {project.description}
-            </p>
+            {/* Minecraft Character Guide Speech Bubble */}
+            <PixelCharacterGuide
+              name="Siddhant"
+              role="Developer"
+              dialogue={guide.dialogue}
+              tip={guide.tip}
+              mood={guide.mood}
+            />
 
-            {/* Core Architectural Highlights (3 Punchy Decisions) */}
+            {/* Visual Highlights Pills (No walls of text) */}
             <div className="space-y-2 pt-1">
               <div className="text-[10px] font-mono uppercase tracking-wider text-[#7C6A95]">
-                ENGINEERING HIGHLIGHTS
+                CORE ARCHITECTURE AT A GLANCE
               </div>
-              <div className="space-y-2">
-                {project.keyDecisions.map((decision, dIdx) => {
-                  const [title, ...rest] = decision.split(":");
-                  return (
-                    <div
-                      key={dIdx}
-                      className="px-3 py-2 text-xs leading-relaxed"
-                      style={{
-                        background: "rgba(16,12,24,0.7)",
-                        borderLeft: `2px solid ${meta.accent}`,
-                      }}
-                    >
-                      <strong className="text-[#E0AAFF] font-mono block text-[11px] mb-0.5">
-                        {title}
-                      </strong>
-                      <span className="text-[#9D91B0] text-[11px]">
-                        {rest.join(":")}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Tech Stack Chips */}
-            <div>
               <div className="flex flex-wrap gap-1.5">
-                {project.techStack.map((tech, tIdx) => (
+                {guide.pills.map((pill, pIdx) => (
                   <span
-                    key={tIdx}
-                    className="px-2 py-0.5 text-[10px] font-mono text-[#D8CFE5]"
+                    key={pIdx}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono text-[#E0AAFF]"
                     style={{
-                      background: "rgba(155,77,202,0.08)",
-                      border: "1px solid rgba(155,77,202,0.25)",
+                      background: "rgba(124,58,237,0.1)",
+                      border: "1px solid rgba(155,77,202,0.3)",
                     }}
                   >
-                    {tech}
+                    <span className="text-[10px]" style={{ color: meta.accent }}>◈</span>
+                    <span>{pill}</span>
                   </span>
                 ))}
               </div>
             </div>
+
+            {/* Tech Stack Chips */}
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {project.techStack.map((tech, tIdx) => (
+                <span
+                  key={tIdx}
+                  className="px-2 py-0.5 text-[10px] font-mono text-[#8A7E9B] bg-white/[0.03] border border-white/5"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Action Links */}
-          <div className="flex items-center gap-3 pt-3 border-t border-[#3A1F5C]/40">
+          <div className="flex items-center gap-3 pt-4 border-t border-[#3A1F5C]/40">
             <a
               href={project.githubUrl}
               target="_blank"
@@ -150,7 +176,7 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-mono font-medium transition-all text-[#F1F0EB] bg-[#161220] hover:bg-[#201830] border border-white/10"
             >
               <Github className="w-3.5 h-3.5" />
-              <span>Source</span>
+              <span>Source Code</span>
               <ArrowUpRight className="w-3 h-3 text-[#7C6A95]" />
             </a>
 
@@ -168,7 +194,7 @@ export default function ProjectCard({ project, index, meta }: ProjectCardProps) 
           </div>
         </div>
 
-        {/* Right Column: Interactive Minecraft Laboratory Visual Simulator */}
+        {/* Right Column: Visual Interactive Simulator (Main attraction) */}
         <div
           className="lg:col-span-7 p-4 sm:p-6 flex items-center justify-center"
           style={{ background: "rgba(6,5,10,0.92)" }}
