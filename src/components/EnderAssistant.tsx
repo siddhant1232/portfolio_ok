@@ -222,6 +222,7 @@ export default function EnderAssistant() {
   const [isTeleporting, setIsTeleporting] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [initialized, setInitialized] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [messages, setMessages] = useState<{ role: "user" | "ender"; text: string }[]>([
     {
       role: "ender",
@@ -235,6 +236,41 @@ export default function EnderAssistant() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const teleportTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Play synthetic Ender sound using Web Audio API
+  const playEnderSound = (type: "teleport" | "chirp" = "teleport") => {
+    if (typeof window === "undefined") return;
+    try {
+      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      if (type === "teleport") {
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(260, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(740, ctx.currentTime + 0.15);
+        osc.frequency.exponentialRampToValueAtTime(140, ctx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
+      } else {
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(520, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.03, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.08);
+      }
+    } catch {
+      // Audio muted/unsupported
+    }
+  };
 
   // Safe corner positions (avoid center of screen)
   const getRandomPosition = useCallback(() => {
@@ -253,11 +289,30 @@ export default function EnderAssistant() {
     return positions[Math.floor(Math.random() * positions.length)];
   }, [isOpen]);
 
-  // Init position on mount
+  // Init position on mount & handle mobile resize
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setPosition({ x: window.innerWidth - 160, y: window.innerHeight - 220 });
+      const checkMobile = () => setIsMobile(window.innerWidth < 640);
+      checkMobile();
+      window.addEventListener("resize", checkMobile);
+      setPosition({ x: window.innerWidth - 140, y: window.innerHeight - 200 });
       setInitialized(true);
+
+      const handleSummon = () => {
+        setIsTeleporting(true);
+        playEnderSound("teleport");
+        setTimeout(() => {
+          setIsTeleporting(false);
+          setIsOpen(true);
+          setTimeout(() => inputRef.current?.focus(), 150);
+        }, 300);
+      };
+      window.addEventListener("summon-ender-assistant", handleSummon);
+
+      return () => {
+        window.removeEventListener("resize", checkMobile);
+        window.removeEventListener("summon-ender-assistant", handleSummon);
+      };
     }
   }, []);
 
@@ -311,6 +366,7 @@ export default function EnderAssistant() {
     (q?: string) => {
       const query = (q ?? input).trim();
       if (!query || isTyping) return;
+      playEnderSound("chirp");
       setInput("");
       setMessages((prev) => [...prev, { role: "user", text: query }]);
       setIsTyping(true);
@@ -327,6 +383,7 @@ export default function EnderAssistant() {
     if (!isOpen) {
       // Brief teleport animation when opening
       setIsTeleporting(true);
+      playEnderSound("teleport");
       setTimeout(() => {
         setIsTeleporting(false);
         setIsOpen(true);
@@ -441,15 +498,39 @@ export default function EnderAssistant() {
           ))}
       </div>
 
+      {/* Mobile backdrop */}
+      {isOpen && isMobile && (
+        <div
+          onClick={() => setIsOpen(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.65)",
+            backdropFilter: "blur(3px)",
+            zIndex: 9997,
+          }}
+        />
+      )}
+
       {/* ── Chat Panel ── */}
       {isOpen && (
         <div
           style={{
             position: "fixed",
-            left: Math.max(10, panelLeft),
-            top: Math.max(10, panelTop),
-            width: panelWidth,
-            maxHeight: 520,
+            ...(isMobile
+              ? {
+                  left: 12,
+                  right: 12,
+                  bottom: 16,
+                  maxHeight: "82vh",
+                  width: "calc(100vw - 24px)",
+                }
+              : {
+                  left: Math.max(10, panelLeft),
+                  top: Math.max(10, panelTop),
+                  width: panelWidth,
+                  maxHeight: 520,
+                }),
             zIndex: 9998,
             display: "flex",
             flexDirection: "column",

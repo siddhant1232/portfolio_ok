@@ -124,6 +124,23 @@ export default function Navbar({ onOpenResumeModal, onOpenCommandPalette }: Navb
               <span>Z:{cursorPos.z}</span>
             </div>
 
+            {/* Ender Assistant Quick Summon */}
+            <button
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("summon-ender-assistant"));
+                }
+              }}
+              className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono text-[#C084FC] hover:text-[#E0AAFF] transition-colors border border-[rgba(155,77,202,0.3)] bg-[#10081C] hover:bg-[#1A0A2E]"
+              title="Summon Ender Assistant (RAG Chatbot)"
+            >
+              <div className="flex gap-0.5">
+                <span className="w-1.5 h-1 bg-[#C084FC] inline-block shadow-[0_0_4px_#A855F7]" />
+                <span className="w-1.5 h-1 bg-[#C084FC] inline-block shadow-[0_0_4px_#A855F7]" />
+              </div>
+              <span className="hidden xl:inline text-[10px] tracking-wider text-[#E0AAFF]">ENDER AI</span>
+            </button>
+
             {/* Command Palette Trigger */}
             {onOpenCommandPalette && (
               <button

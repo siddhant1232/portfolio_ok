@@ -144,8 +144,8 @@ function HeroTerminal() {
       output: (
         <div className="text-[11px] space-y-0.5">
           <p className="text-[#A0D060] font-semibold">// AVAILABLE COMMANDS</p>
-          {["whoami","about","experience","projects","skills","achievements","education","contact","clear"].map(c => (
-            <p key={c}><span className="text-[#A0D060]">{c}</span> <span className="text-[#5A5450]">— navigate to section</span></p>
+          {["whoami","about","experience","projects","skills","achievements","education","contact","ender","portal","clear"].map(c => (
+            <p key={c}><span className="text-[#A0D060]">{c}</span> <span className="text-[#5A5450]">— navigate to section / summon entity</span></p>
           ))}
         </div>
       ),
@@ -184,6 +184,32 @@ function HeroTerminal() {
             </div>
           );
           break;
+        case "ender":
+        case "assistant":
+        case "rag":
+          if (typeof window !== "undefined") {
+            window.dispatchEvent(new CustomEvent("summon-ender-assistant"));
+          }
+          out = (
+            <div className="text-[11px] space-y-0.5 text-[#C084FC]">
+              <p>☽ Summong Ender Assistant from The Void...</p>
+              <p className="text-[10px] text-[#9D8EB5]">Ender entity active. Knock twice or query via chat interface.</p>
+            </div>
+          );
+          break;
+        case "portal":
+        case "nether":
+          navigate("contact");
+          out = <span className="text-[#C084FC] text-[11px]">⚡ Igniting Nether Portal... Transmitting to dimensional contact hub.</span>;
+          break;
+        case "end":
+          navigate("projects");
+          out = <span className="text-[#E0AAFF] text-[11px]">☽ Teleporting to The End Dimension (Outer Islands Labs)...</span>;
+          break;
+        case "craft":
+          navigate("skills");
+          out = <span className="text-[#FFAA00] text-[11px]">⚒ Opening 3×3 Engineering Crafting Table...</span>;
+          break;
         case "clear":
           setHistory([]);
           setInput("");
@@ -192,7 +218,7 @@ function HeroTerminal() {
           out = (
             <div className="text-[11px] space-y-0.5">
               <p className="text-[#A0D060] font-semibold">// AVAILABLE COMMANDS</p>
-              {["whoami","about","experience","projects","skills","achievements","education","contact","clear"].map(c => (
+              {["whoami","about","experience","projects","skills","achievements","education","contact","ender","portal","clear"].map(c => (
                 <p key={c}><span className="text-[#A0D060]">{c}</span></p>
               ))}
             </div>

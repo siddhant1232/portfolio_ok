@@ -35,6 +35,18 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
 
   const actions = [
     {
+      id: "ender-assistant",
+      name: "Summon Ender Assistant (RAG Chatbot)",
+      subtitle: "Ask questions about Siddhant's skills, experience & projects",
+      icon: <Sparkles className="w-4 h-4 text-[#C084FC]" />,
+      action: () => {
+        onClose();
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("summon-ender-assistant"));
+        }
+      },
+    },
+    {
       id: "projects",
       name: "View Featured Projects",
       subtitle: "Multi-Agent System, Distributed Rate Limiter, Conciso",
